@@ -1,5 +1,6 @@
 import './App.css'
 import Card from './components/Card'
+import Counter from './components/Counter'
 
 function App() {
 
@@ -57,12 +58,21 @@ function App() {
 
   return (
     <>
-      <h1 className="easy-title">Easy Cars</h1>
-      <div className="cars-container">
-        {cars.map((car) => (
-          <Card key={car.name} {...car} />
-        ))}
-      </div>
+      <main>
+        <header>
+         <h1 className="easy-title">Easy Cars</h1>
+        </header>
+        <section>
+          <div className="cars-container">
+            {cars.map((car) => (
+              <Card key={car.name} {...car} />
+            ))}
+          </div>
+        </section>
+        <section className="counter-section">
+          <Counter />
+        </section>
+      </main>
     </>
   );
 }

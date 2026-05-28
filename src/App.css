@@ -13,6 +13,11 @@
   padding: 0 24px;
 }
 
+.counter-section {
+  display: flex;
+  justify-content: center;
+}
+
 @media (max-width: 960px) {
   .cars-container {
     grid-template-columns: repeat(2, 1fr);
