@@ -3,29 +3,3 @@
   font-size: 2rem;
   font-weight: bold;
 }
-
-.cars-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-.counter-section {
-  display: flex;
-  justify-content: center;
-}
-
-@media (max-width: 960px) {
-  .cars-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 640px) {
-  .cars-container {
-    grid-template-columns: 1fr;
-  }
-}
