@@ -1,8 +1,9 @@
+import { Suspense } from 'react';
 import './App.css'
 import Navbar from './components/Navbar'
 import { BrowserRouter as Router, Routes, Route } from 'react-router';
-import Catalog from './pages/Catalog/Catalog';
-import Contact from './pages/Contact/Contact';
+import routes from './routes';
+import Loading from './components/Loading';
 
 function App() {
 
@@ -14,11 +15,13 @@ function App() {
           <header>
             <Navbar />
           </header>
-          <Routes>
-            <Route path="/" element={<Catalog />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="*" element={<Catalog />} />
-          </Routes>
+          <Suspense fallback={<Loading />}>
+            <Routes>
+              {routes.map((route) => (
+                <Route key={route.path} path={route.path} element={route.element} />
+              ))}
+            </Routes>
+          </Suspense>
         </Router>
       </main>
     </>
