@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
         setUserData({
           email: session.user.email,
           name: session.user.email,
-          role: 'admin',
+          role: 'Admin',
         });
       }
       setIsLoading(false);

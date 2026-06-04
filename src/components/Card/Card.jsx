@@ -1,7 +1,9 @@
 import './Card.css';
+import { useAuth } from '../../hooks/useAuth';
 
 function Card(props) {
-    const { name, image, speed, "0-100": zeroToHundred, seats, price, isMostPopular } = props;
+    const { id, name, image, speed, "0-100": zeroToHundred, seats, price, isMostPopular, onDelete } = props;
+    const { hasRole } = useAuth();
     return (
         <article className="card">
             <header className="card__head">
@@ -20,6 +22,9 @@ function Card(props) {
             <div className="card--button-container">
                 <button className="btn btn-primary" type="button">Rent</button>
                 <button className="btn btn-favorite" type="button" aria-label="Add to favorites">♡</button>
+                {hasRole('Admin') && onDelete && (
+                    <button className="btn btn-delete" type="button" aria-label="Delete car" onClick={() => onDelete(id)}>🗑</button>
+                )}
             </div>
         </article>
     );
