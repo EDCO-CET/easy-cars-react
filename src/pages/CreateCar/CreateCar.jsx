@@ -1,11 +1,10 @@
 import { useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
 import { useForm } from '../../hooks/useForm';
-import { useApi } from '../../hooks/useApi';
+import { carService } from '../../services/car.service';
 import styles from './CreateCar.module.css';
+import { useState } from 'react';
 
-// URL del endpoint donde se crean los carros
-const API_URL = 'http://localhost:4000/api/cars';
 
 // ---------- Funciones de validación (retornan '' si el valor es válido) ----------
 
@@ -51,6 +50,7 @@ const validationRules = {
 };
 
 function CreateCar() {
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     // 1. Estado del formulario: useForm maneja los valores y los errores por campo
@@ -66,7 +66,7 @@ function CreateCar() {
 
     // 2. Conexión con el API: en modo POST la petición NO se dispara sola,
     //    nosotros la ejecutamos con `execute(body)` cuando el form se envía
-    const { execute, loading } = useApi(API_URL, { method: 'POST' });
+    //const { execute, loading } = useApi(API_URL, { method: 'POST' });
 
     /**
      * Valida TODOS los campos antes de enviar.
@@ -98,7 +98,8 @@ function CreateCar() {
             // Armamos el objeto con la forma que espera el API.
             // El campo "0-100" no es un nombre de variable válido en JS,
             // por eso en el form lo llamamos zeroToHundred y lo mapeamos aquí.
-            await execute({
+            setLoading(true);
+            await carService.create({
                 name: values.name,
                 type: values.type,
                 image: values.image,
@@ -126,6 +127,8 @@ function CreateCar() {
                 icon: 'error',
                 confirmButtonText: 'Ok',
             });
+        } finally {
+            setLoading(false);
         }
     };
 

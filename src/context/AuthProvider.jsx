@@ -1,22 +1,49 @@
 
 import { useState, useEffect } from "react";
 import { AuthContext } from "./auth";
+import { supabase } from "../utils/supabase";
 
 export const AuthProvider = ({ children }) => {
-  const [userData, setUserData] = useState(
-    localStorage.getItem('auth_user') ? JSON.parse(localStorage.getItem('auth_user')) : null
-  );
+  const [userData, setUserData] = useState (null);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    // Get initial session
+    const getInitialSession = async () => {
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
+      if (error) {
+        console.error('Error getting session:', error);
+      } else if (session?.user) {
+        setUserData({
+          email: session.user.email,
+          name: session.user.email,
+          role: 'admin',
+        });
+      }
+      setIsLoading(false);
+    };
+
+    getInitialSession();
+  }, []);
 
   const login = async (email, password) => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:4000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
       });
-      const userData = await response.json();
+      if(error){
+        throw error;
+      }
+      const userData = {
+        email: data.user.email,
+        name: data.user.email,
+        role: 'Admin',
+      }
       setUserData(userData);
     } catch (error) {
       console.error('Error en login:', error);
@@ -32,10 +59,16 @@ export const AuthProvider = ({ children }) => {
     }
   }, [userData]);
 
-  const hasRole = (role) => userData?.user?.rol === role;
+  const hasRole = (role) => userData?.role === role;
   const hasPermission = (permission) => userData?.user?.permissions?.includes(permission);
 
-  const logout = () => setUserData(null);
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Error en logout:', error);
+    }
+    setUserData(null);
+  };
 
   return (
     <AuthContext.Provider value={{ userData, login, logout, isLoading, hasRole, hasPermission }}>

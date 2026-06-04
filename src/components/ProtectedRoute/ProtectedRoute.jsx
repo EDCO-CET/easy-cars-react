@@ -3,7 +3,7 @@
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
 
-function ProtectedRoute({ children, requiredRole = 'admin' }) {
+function ProtectedRoute({ children, requiredRole = 'Admin' }) {
     const { userData, hasRole } = useAuth();
     const navigate = useNavigate();
     

@@ -35,7 +35,7 @@ function Navbar() {
             {
               userData ? (
                 <div className={styles.userSection}>
-                  <span>{`Hello ${userData.user?.name}!`}</span>
+                  <span>{`Hello ${userData.name}!`}</span>
                   <button className={styles.logoutButton} onClick={logout}>Logout</button>
                 </div>
               ) : (

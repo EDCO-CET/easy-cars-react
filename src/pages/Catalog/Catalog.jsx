@@ -1,11 +1,33 @@
 import Card from "../../components/Card";
 import styles from "./Catalog.module.css";
-import { useApi } from "../../hooks/useApi";
+import { supabase } from '../../utils/supabase'
+import { useEffect, useState } from "react";
 
 
 function Catalog() {
-    const url = 'http://localhost:4000/api/cars';
-    const { data: cars, loading, error } = useApi(url);
+    const [cars, setCars] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        async function getCars() {
+            try {
+            setLoading(true);
+            const { data: carsData } = await supabase.from('Cars').select();
+
+            if (carsData) {
+                setCars(carsData)
+            }
+            setLoading(false);
+            } catch (error) {
+                console.error('Error fetching cars:', error);
+                setError(error);
+                setLoading(false);
+            }
+        }
+
+        getCars();
+    }, []);
 
     return (
         <section>
