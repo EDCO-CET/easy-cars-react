@@ -15,7 +15,7 @@ function Card(props) {
                 <li>{seats}</li>
             </ul>
             <p className="card--price">
-                <span className="card--price__amount">{price}</span>
+                <span className="card--price__amount">{`$${price}`}</span>
             </p>
             <div className="card--button-container">
                 <button className="btn btn-primary" type="button">Rent</button>
