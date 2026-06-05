@@ -13,8 +13,8 @@ function CreateCar() {
             await carService.create(carPayload);
 
             await Swal.fire({
-                title: '¡Guardado!',
-                text: 'El carro fue creado exitosamente',
+                title: '¡Saved!',
+                text: 'Successfully saved',
                 icon: 'success',
                 confirmButtonText: 'Ok',
             });
