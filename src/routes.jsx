@@ -21,7 +21,7 @@ const routes = [
     {
         // Ruta para el formulario de creación de carros
         path: "/cars/new",
-        element: (<ProtectedRoute requiredRole="Admin"><CreateCar /></ProtectedRoute>)
+        element: (<ProtectedRoute requiredRole="admin"><CreateCar /></ProtectedRoute>)
     },
     {
         path: "*",

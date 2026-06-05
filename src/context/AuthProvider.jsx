@@ -1,39 +1,58 @@
 
 import { useState, useEffect } from "react";
 import { AuthContext } from "./auth";
+import { supabase } from "../utils/supabase";
 
 export const AuthProvider = ({ children }) => {
-  const [userData, setUserData] = useState(
-    localStorage.getItem('auth_user') ? JSON.parse(localStorage.getItem('auth_user')) : null
-  );
+  const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const getInitialSession = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error) {
+        console.error('Error getting session:', error);
+        return;
+      }
+      if (session) {
+        setUserData({
+          id: session.user.id,
+          email: session.user.email,
+          name: session.user.email.split('@')[0],
+          role: 'admin',
+          permissions: []
+        });
+      }
+    };
+
+    getInitialSession();
+  }, []);
+
 
   const login = async (email, password) => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:4000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-      const userData = await response.json();
-      setUserData(userData);
+      const {data, error} = await supabase.auth.signInWithPassword({ email, password });
+      if(error){
+        throw error;
+      }
+      const userFromSupabase = {
+        id: data.user.id,
+        email: data.user.email,
+        name: data.user.email.split('@')[0],
+        role: 'admin',
+        permissions: []
+      }
+      setUserData(userFromSupabase);
     } catch (error) {
       console.error('Error en login:', error);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
-  useEffect(() => {
-    if (userData) {
-      localStorage.setItem('auth_user', JSON.stringify(userData));
-    } else {
-      localStorage.removeItem('auth_user');
-    }
-  }, [userData]);
-
-  const hasRole = (role) => userData?.user?.rol === role;
-  const hasPermission = (permission) => userData?.user?.permissions?.includes(permission);
+  const hasRole = (role) => userData?.role === role;
+  const hasPermission = (permission) => userData?.permissions?.includes(permission);
 
   const logout = () => setUserData(null);
 
