@@ -1,9 +1,11 @@
 import './Card.css';
+import { useNavigate } from 'react-router';
 import { useAuth } from '../../hooks/useAuth';
 
 function Card(props) {
     const { id, name, image, speed, "0-100": zeroToHundred, seats, price, isMostPopular, onDelete } = props;
     const { hasRole } = useAuth();
+    const navigate = useNavigate();
     return (
         <article className="card">
             <header className="card__head">
@@ -20,7 +22,8 @@ function Card(props) {
                 <span className="card--price__amount">{`$${price}`}</span>
             </p>
             <div className="card--button-container">
-                <button className="btn btn-primary" type="button">Rent</button>
+                {/* "Rent" lleva al detalle del carro: /cars/:id */}
+                <button className="btn btn-primary" type="button" onClick={() => navigate(`/cars/${id}`)}>Rent</button>
                 <button className="btn btn-favorite" type="button" aria-label="Add to favorites">♡</button>
                 {hasRole('Admin') && onDelete && (
                     <button className="btn btn-delete" type="button" aria-label="Delete car" onClick={() => onDelete(id)}>🗑</button>
