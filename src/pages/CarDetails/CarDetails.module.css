@@ -1,0 +1,124 @@
+/* Estilos de la página de detalle del carro */
+
+.car-details {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.car-details__card {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    max-width: 960px;
+    width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    background: var(--gradient-card);
+    box-shadow: var(--shadow-md);
+}
+
+/* Dos columnas en desktop: imagen a la izquierda, info a la derecha */
+@media (min-width: 768px) {
+    .car-details__card {
+        grid-template-columns: 1.2fr 1fr;
+        align-items: center;
+    }
+}
+
+.car-details__image {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+}
+
+.car-details__info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.car-details__head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.car-details__head h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--color-text);
+    margin: 0;
+}
+
+.car-details__specs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 14px 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    list-style: none;
+    margin: 0;
+}
+
+.car-details__specs li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.car-details__specs span {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-text-soft);
+}
+
+.car-details__specs strong {
+    font-size: 1rem;
+    color: var(--color-text);
+    font-weight: 700;
+}
+
+.car-details__price {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: 0;
+}
+
+.car-details__price-amount {
+    font-size: 2.4rem;
+    font-weight: 800;
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: -1px;
+}
+
+.car-details__price-unit {
+    font-size: 1rem;
+    color: var(--color-text-soft);
+}
+
+.car-details__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Estado de error: carro no encontrado */
+.car-details__error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 4rem 1rem;
+    text-align: center;
+}
